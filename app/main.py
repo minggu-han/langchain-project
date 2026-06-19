@@ -31,6 +31,7 @@ from app.langchain_utils.llm_factory import setup_llm_cache
 from app.api.auth import router as auth_router
 from app.api.chat import router as chat_router
 from app.api.documents import router as documents_router
+from app.api.skills import router as skills_router
 
 settings = get_settings()
 
@@ -132,6 +133,11 @@ app = FastAPI(
 - Milvus 向量数据库管理
 - RAG 文档查询
 
+### 🎯 Skills 技能 `/api/v1/skills`
+- 8 个预置可复用技能模板
+- 代码审阅、翻译、摘要、SQL 生成、邮件撰写...
+- 支持同步调用和 SSE 流式输出
+
 ## 学习路径
 
 1. 注册账户 → 获取 Token
@@ -208,6 +214,7 @@ async def log_requests(request: Request, call_next):
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(chat_router, prefix="/api/v1")
 app.include_router(documents_router, prefix="/api/v1")
+app.include_router(skills_router, prefix="/api/v1")
 
 
 # ================================================================
