@@ -1,0 +1,57 @@
+[project]
+name = "langchain-learning"
+version = "0.1.0"
+description = "LangChain 学习项目 - 集成 FastAPI + PostgreSQL + Redis + JWT认证"
+requires-python = ">=3.11"
+dependencies = [
+    # ==================== Web 框架 ====================
+    "fastapi>=0.115.0",           # 高性能异步 Web 框架
+    "uvicorn[standard]>=0.30.0",  # ASGI 服务器，支持热重载
+
+    # ==================== 数据库 ====================
+    "sqlalchemy[asyncio]>=2.0.30", # ORM 框架，支持异步操作
+    "asyncpg>=0.29.0",             # PostgreSQL 异步驱动
+    "alembic>=1.13.0",             # 数据库迁移工具
+
+    # ==================== Redis 缓存 ====================
+    "redis>=5.0.0",                # Redis 客户端（异步支持）
+
+    # ==================== 认证与安全 ====================
+    "python-jose[cryptography]>=3.3.0", # JWT（JSON Web Token）生成与验证
+    "bcrypt>=4.0.0",                     # 密码哈希算法（直接使用，不需要 passlib）
+
+    # ==================== 数据验证 ====================
+    "pydantic>=2.7.0",             # 数据验证和序列化
+    "pydantic-settings>=2.3.0",    # 从环境变量/.env 读取配置
+    "email-validator>=2.1.0",      # Pydantic EmailStr 类型需要
+
+    # ==================== LangChain 生态 ====================
+    "langchain>=0.3.0",            # LangChain 核心库
+    "langchain-openai>=0.2.0",     # OpenAI 模型集成
+    "langchain-community>=0.3.0",  # 社区集成（文档加载器、向量存储等）
+    "langchain-milvus>=0.1.0",     # Milvus 向量数据库集成
+    "pymilvus>=2.4.0",             # Milvus Python SDK
+
+    # ==================== 工具 ====================
+    "python-dotenv>=1.0.1",        # 加载 .env 环境变量
+    "python-multipart>=0.0.9",     # 文件上传支持（OAuth2 表单需要）
+    "tiktoken>=0.7.0",             # OpenAI token 计数
+    "langchain-classic>=1.0.0",    # LangChain 1.0 Agent 支持（AgentExecutor 等）
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",               # 测试框架
+    "pytest-asyncio>=0.23.0",      # 异步测试支持
+    "httpx>=0.27.0",               # HTTP 客户端（用于测试 API）
+]
+
+# ==================== 工具配置 ====================
+[tool.pytest.ini_options]
+asyncio_mode = "auto"              # 自动检测异步测试
+testpaths = ["tests"]
+
+[tool.ruff]
+# Ruff 代码风格（如果安装）
+line-length = 100
+target-version = "py311"

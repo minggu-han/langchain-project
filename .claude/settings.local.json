@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run *)",
+      "Bash(uv sync *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :8000)",
+      "Bash(tasklist /FI \"PID eq 44160\")",
+      "Bash(tasklist /FI \"PID eq 41016\")",
+      "Bash(powershell *)",
+      "Bash(taskkill /F /PID 44160)",
+      "Bash(curl -s http://localhost:8001/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8001/docs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8001/openapi.json)",
+      "Bash(taskkill /F /FI \"WINDOWTITLE eq uvicorn*\")",
+      "Bash(curl -s http://localhost:8001/docs -o /dev/null -w \"%{http_code}\")",
+      "Bash(powershell -Command 'Get-NetTCPConnection -LocalPort 8001 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }')",
+      "Bash(curl -s -o /dev/null -w \"docs: %{http_code}\" http://localhost:8001/docs)"
+    ]
+  }
+}
