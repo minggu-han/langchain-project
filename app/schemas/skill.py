@@ -213,3 +213,63 @@ class SkillChatResponse(BaseModel):
         default=None,
         description="会话 ID",
     )
+
+
+# ================================================================
+# 8. 全功能 Agent 对话请求
+# ================================================================
+class AgentChatRequest(BaseModel):
+    """
+    全功能 Agent 对话请求
+
+    Agent 自主决定使用以下能力：
+    - Skills：8 个预置技能（代码审阅、翻译、摘要...）
+    - Tools：calculator、get_current_time、text_statistics
+    - RAG：search_documents 文档检索
+    - Chain：通用对话
+    """
+    message: str = Field(
+        ...,
+        min_length=1,
+        max_length=4000,
+        description="用户消息（自然语言），Agent 自主判断该用什么能力",
+        examples=["帮我审阅这段代码，然后计算它的时间复杂度"],
+    )
+    session_id: Optional[str] = Field(
+        default=None,
+        description="会话 ID，传相同 ID 保持多轮对话上下文",
+    )
+    temperature: Optional[float] = Field(
+        default=0.3,
+        ge=0.0,
+        le=2.0,
+        description="LLM 温度参数",
+    )
+
+
+# ================================================================
+# 9. 全功能 Agent 对话响应
+# ================================================================
+class AgentStepInfo(BaseModel):
+    """Agent 执行的一个中间步骤"""
+    tool: str = Field(..., description="使用的工具名称")
+    tool_input: str = Field(..., description="传给工具的输入")
+    observation: str = Field(..., description="工具返回的结果（截断）")
+
+
+class AgentChatResponse(BaseModel):
+    """
+    全功能 Agent 对话响应
+    """
+    answer: str = Field(..., description="Agent 的最终答案")
+    session_id: str = Field(..., description="会话 ID")
+    model_name: str = Field(..., description="使用的 LLM 模型名称")
+    steps: list[AgentStepInfo] = Field(
+        default_factory=list,
+        description="Agent 的中间步骤（工具调用过程）",
+    )
+    total_steps: int = Field(default=0, description="总步骤数")
+    rag_used: bool = Field(
+        default=False,
+        description="是否使用了 RAG（Milvus 检索到了相关文档）",
+    )

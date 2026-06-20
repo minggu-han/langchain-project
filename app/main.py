@@ -16,6 +16,14 @@ FastAPI 应用入口 - LangChain 学习项目
 API 文档：
     启动后访问 http://localhost:8001/docs     (Swagger UI)
     或           http://localhost:8001/redoc   (ReDoc)
+
+    {
+  "username": "zhangsan",
+  "password": "MyPass123",
+  "email": "user@example.com",
+  "full_name": "张三"
+}
+
 """
 import time
 from contextlib import asynccontextmanager
@@ -32,6 +40,7 @@ from app.api.auth import router as auth_router
 from app.api.chat import router as chat_router
 from app.api.documents import router as documents_router
 from app.api.skills import router as skills_router
+from app.api.agent import router as agent_router
 
 settings = get_settings()
 
@@ -138,6 +147,11 @@ app = FastAPI(
 - 代码审阅、翻译、摘要、SQL 生成、邮件撰写...
 - 支持同步调用和 SSE 流式输出
 
+### 🤖 Full Agent 全功能代理 `/api/v1/agent`
+- 整合 Memory + Skills + Tools + RAG + Chain
+- Agent 自主决策：用什么能力、什么顺序
+- 支持同步和 SSE 流式，展示思考步骤
+
 ## 学习路径
 
 1. 注册账户 → 获取 Token
@@ -215,6 +229,7 @@ app.include_router(auth_router, prefix="/api/v1")
 app.include_router(chat_router, prefix="/api/v1")
 app.include_router(documents_router, prefix="/api/v1")
 app.include_router(skills_router, prefix="/api/v1")
+app.include_router(agent_router, prefix="/api/v1")
 
 
 # ================================================================
